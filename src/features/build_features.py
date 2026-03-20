@@ -8,8 +8,19 @@ from sklearn.preprocessing import LabelEncoder
 sys.path.append(os.path.join(os.getcwd()))
 
 from src.config import ATTACK_MAPPING
+from src.utils.logger import logger
 
 def encode_data(df):
+    """
+    Encode categorical features and map attack labels to binary/multi-class targets.
+    
+    Args:
+        df (pd.DataFrame): Input dataframe.
+        
+    Returns:
+        pd.DataFrame: Dataframe with encoded features and new targets.
+    """
+    logger.info("Encoding targets and categorical features...")
     # 1. Target Encoding (Binary)
     df['target_binary'] = df['attack'].apply(lambda x: 0 if x == 'normal' else 1)
     
