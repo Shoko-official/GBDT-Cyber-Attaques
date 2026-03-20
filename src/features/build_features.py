@@ -1,19 +1,13 @@
 import pandas as pd
 import numpy as np
 import os
+import sys
 from sklearn.preprocessing import LabelEncoder
 
-# Attack mapping for multi-class classification
-ATTACK_MAPPING = {
-    'apache2': 'dos', 'back': 'dos', 'land': 'dos', 'neptune': 'dos', 'mailbomb': 'dos',
-    'pod': 'dos', 'processtable': 'dos', 'smurf': 'dos', 'teardrop': 'dos', 'udpstorm': 'dos', 'worm': 'dos',
-    'ipsweep': 'probe', 'mscan': 'probe', 'nmap': 'probe', 'portsweep': 'probe', 'saint': 'probe', 'satan': 'probe',
-    'ftp_write': 'r2l', 'guess_passwd': 'r2l', 'httptunnel': 'r2l', 'imap': 'r2l', 'multihop': 'r2l', 'named': 'r2l',
-    'phf': 'r2l', 'sendmail': 'r2l', 'snmpgetattack': 'r2l', 'snmpguess': 'r2l', 'spy': 'r2l', 'warezclient': 'r2l',
-    'warezmaster': 'r2l', 'xlock': 'r2l', 'xsnoop': 'r2l',
-    'buffer_overflow': 'u2r', 'loadmodule': 'u2r', 'perl': 'u2r', 'ps': 'u2r', 'rootkit': 'u2r', 'sqlattack': 'u2r', 'xterm': 'u2r',
-    'normal': 'normal'
-}
+# Add src to path
+sys.path.append(os.path.join(os.getcwd()))
+
+from src.config import ATTACK_MAPPING
 
 def encode_data(df):
     # 1. Target Encoding (Binary)
