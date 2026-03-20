@@ -34,12 +34,20 @@ def preprocess_basic(df):
     return df
 
 def main():
-    raw_dir = "data/raw"
+    raw_dir = "data/archive"  # Updated to point where the user put the data
     processed_dir = "data/processed"
     os.makedirs(processed_dir, exist_ok=True)
     
-    train_df = load_data(os.path.join(raw_dir, "KDDTrain+.txt"))
-    test_df = load_data(os.path.join(raw_dir, "KDDTest+.txt"))
+    train_path = os.path.join(raw_dir, "KDDTrain+.txt")
+    test_path = os.path.join(raw_dir, "KDDTest+.txt")
+    
+    if not os.path.exists(train_path):
+        # Fallback to subdirectory if needed
+        train_path = os.path.join(raw_dir, "nsl-kdd", "KDDTrain+.txt")
+        test_path = os.path.join(raw_dir, "nsl-kdd", "KDDTest+.txt")
+    
+    train_df = load_data(train_path)
+    test_df = load_data(test_path)
     
     train_df = preprocess_basic(train_df)
     test_df = preprocess_basic(test_df)
