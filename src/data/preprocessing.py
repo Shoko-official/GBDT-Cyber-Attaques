@@ -6,13 +6,32 @@ import sys
 sys.path.append(os.path.join(os.getcwd()))
 
 from src.config import COLUMNS
+from src.utils.logger import logger
 
 def load_data(file_path):
-    print(f"Loading {file_path}...")
+    """
+    Load NSL-KDD data from a text file and assign column names.
+    
+    Args:
+        file_path (str): Path to the .txt file.
+        
+    Returns:
+        pd.DataFrame: Loaded dataframe.
+    """
+    logger.info(f"Loading data from {file_path}...")
     df = pd.read_csv(file_path, names=COLUMNS, header=None)
     return df
 
 def preprocess_basic(df):
+    """
+    Perform basic string cleaning and check for missing values.
+    
+    Args:
+        df (pd.DataFrame): Dataframe to clean.
+        
+    Returns:
+        pd.DataFrame: Cleaned dataframe.
+    """
     # Strip whitespace from string columns
     str_cols = df.select_dtypes(include=['object']).columns
     for col in str_cols:
@@ -20,10 +39,11 @@ def preprocess_basic(df):
     
     # Check for missing values
     missing = df.isnull().sum().sum()
-    print(f"Found {missing} missing values.")
+    if missing > 0:
+        logger.warning(f"Found {missing} missing values.")
+    else:
+        logger.info("No missing values found.")
     
-    # In NSL-KDD, the 'level' column is often ignored for basic classification
-    # but we'll keep it for EDA.
     return df
 
 def main():
